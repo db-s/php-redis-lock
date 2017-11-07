@@ -175,7 +175,7 @@ class RedisLock implements LockInterface {
         $sleep = ($sleep ?: self::LOCK_DEFAULT_WAIT_SLEEP) * 1000000;
 
         do {
-            if ($this->Redis->set($this->key, $this->token, null, $lockTime * 1000, 'NX')) {
+            if ($this->Redis->set($this->key, $this->token, 'NX', 'PX', $lockTime * 1000)) {
                 $this->isAcquired = true;
                 return true;
             }
